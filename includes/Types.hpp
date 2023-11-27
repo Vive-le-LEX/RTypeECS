@@ -13,15 +13,14 @@
 #include <iostream>
 #include <stdint.h>
 
-class Component;
+class AComponent;
 class Entity;
 
 using ComponentID = int64_t;
 
 constexpr std::size_t maxComponents = 128;
 
-using ComponentBitSet = std::bitset<maxComponents>;
-using ComponentArray = std::array<Component*, maxComponents>;
-
+using ComponentBitSet = std::bitset<64>;
+using ComponentArray = std::array<AComponent*, maxComponents>;
 
 #endif /* !TYPES_HPP_ */
