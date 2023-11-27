@@ -1,0 +1,9 @@
+{
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "random": "c",
+        "bitset": "c",
+        "iostream": "cpp",
+        "ostream": "cpp"
+    }
+}
