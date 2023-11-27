@@ -8,8 +8,15 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic")
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++17")
+
+    if(NOT WIN32)
+        set(GLAD_LIBRARIES dl)
+    endif()
+endif()
 
 set(TEST_PROJECT_NAME ${PROJECT_NAME}_test)
 
@@ -24,7 +31,12 @@ add_executable(${PROJECT_NAME} ${SRC} ${SRC_MAIN})
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR}/includes
+)
+
+target_link_libraries(${PROJECT_NAME}
+    glfw
+    ${GLFW_LIBRARIES}
 )
 
 add_custom_target(fclean
