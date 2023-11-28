@@ -19,8 +19,10 @@ class Entity {
         const bool &isActive(void) const { return _isActive; }
 
         void update(void) {
-            for (auto &component : components)
-                component->update();
+            for (size_t i = 0; i < maxComponents; i++) {
+                if (componentBitSet[i])
+                    componentArray[i]->update();
+            }
         }
 
         void destroy(void) {
@@ -36,11 +38,10 @@ class Entity {
         T& addComponent(TArgs&&... args) {
             T* component(new T(std::forward<TArgs>(args)...));
             component->entity = this;
-            std::unique_ptr<AComponent> uPtr{component};
-            components.emplace_back(std::move(uPtr));
 
-            componentArray[getComponentTypeID<T>()] = component;
-            componentBitSet[getComponentTypeID<T>()] = true;
+            ComponentID id = getComponentTypeID<T>();
+            componentArray[id] = component;
+            componentBitSet[id] = true;
 
             component->init();
             return *component;
@@ -48,13 +49,12 @@ class Entity {
 
         template <typename T>
         T& getComponent(void) const {
-            auto ptr(componentArray[getComponentTypeID<T>()])
+            auto ptr(componentArray[getComponentTypeID<T>()]);
             return *static_cast<T*>(ptr);
         }
 
     private:
         bool _isActive = true;
-        std::vector<std::unique_ptr<AComponent>> components;
 
         ComponentArray componentArray;
         ComponentBitSet componentBitSet;

@@ -26,13 +26,15 @@ set(SRC_MAIN
 )
 
 set(SRC
+    src/Components/PositionComponent.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC} ${SRC_MAIN})
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/includes
+        ${CMAKE_CURRENT_SOURCE_DIR}/includes
+        ${CMAKE_CURRENT_SOURCE_DIR}/includes/Components
 )
 
 target_link_libraries(${PROJECT_NAME} glfw)
