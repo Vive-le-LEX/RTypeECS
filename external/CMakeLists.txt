@@ -1,17 +1,26 @@
 include(FetchContent)
 Set(FETCHCONTENT_QUIET FALSE) # Needed to print downloading progress
 
-# Download and extract the boost library from GitHub
-message(STATUS "Downloading and extracting boost library sources. This will take some time...")
-
-FetchContent_Declare(
-    Boost
-    URL https://github.com/boostorg/boost/releases/download/boost-1.83.0/boost-1.83.0.7z # downloading a zip release speeds up the download
-    USES_TERMINAL_DOWNLOAD TRUE
-    GIT_PROGRESS TRUE
-    DOWNLOAD_NO_EXTRACT FALSE
+# Download and extract the asio library from GitHub
+message(STATUS "Downloading and extracting asio library sources. This will take some time...")
+FetchContent_Declare(asio
+    GIT_REPOSITORY git@github.com:chriskohlhoff/asio.git
+    GIT_TAG master
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
 )
-FetchContent_MakeAvailable(Boost)
+
+FetchContent_GetProperties(asio)
+
+if(NOT asio_POPULATED)
+    FetchContent_Populate(asio)
+endif()
+
+add_library(asio INTERFACE)
+
+target_include_directories(asio INTERFACE ${asio_SOURCE_DIR}/asio/include)
+find_package(Threads)
+target_link_libraries(asio INTERFACE Threads::Threads)
 
 # Download and extract the glfw3 library from GitHub
 
