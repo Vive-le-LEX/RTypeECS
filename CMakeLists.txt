@@ -25,7 +25,11 @@ set(SRC_MAIN
 )
 
 set(SRC
-    src/Components/PositionComponent.cpp
+        includes/managers/EntityManager.hpp
+        includes/Types.hpp
+        includes/managers/ComponentManager.hpp
+        includes/components/IComponentArray.hpp
+        includes/components/ComponentArray.hpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC} ${SRC_MAIN})

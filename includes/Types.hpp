@@ -1,26 +1,35 @@
 /*
-** EPITECH PROJECT, 2023
-** RTypeServer
-** File description:
-** Types
+ * Copyright (c) 2023 - Kleo
+ * Authors:
+ * - LEO VILTARD <leo.viltard@epitech.eu>
+ * NOTICE: All information contained herein is, and remains
+ * the property of Kleo © and its suppliers, if any.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Kleo ©.
 */
 
-#ifndef TYPES_HPP_
-#define TYPES_HPP_
+#pragma once
 
-#include <array>
 #include <bitset>
-#include <iostream>
-#include <stdint.h>
+#include <cinttypes>
 
-class AComponent;
-class Entity;
+namespace EpiCS {
 
-using ComponentID = int64_t;
+#pragma region ComponentsTypes
 
-constexpr std::size_t maxComponents = 128;
+    using ComponentType = std::uint8_t;
 
-using ComponentBitSet = std::bitset<64>;
-using ComponentArray = std::array<AComponent*, maxComponents>;
+    const ComponentType MAX_COMPONENTS = 32;
 
-#endif /* !TYPES_HPP_ */
+    using Signature = std::bitset<MAX_COMPONENTS>;
+
+#pragma endregion ComponentsTypes
+
+#pragma region EntityTypes
+    using Entity = std::uint64_t;
+
+    const Entity MAX_ENTITIES = 5000;
+#pragma endregion EntityTypes
+
+} // namespace EpiCS

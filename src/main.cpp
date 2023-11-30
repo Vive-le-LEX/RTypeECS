@@ -10,8 +10,7 @@
 #include <asio.hpp>
 #include <iostream>
 
-#include "ECSManager.hpp"
-#include "PositionComponent.hpp"
+#define UNUSED(x) (void)(x)
 
 namespace ip = asio::ip;
 
@@ -23,18 +22,9 @@ std::string getAddress() {
 }
 
 int main(int ac, char **av) {
-    (void)ac;
-    (void)av;
-    ECSManager manager;
-
-    auto &e = manager.addEntity();
-
-    e.addComponent<PositionComponent>();
-    e.getComponent<PositionComponent>().setX(10);
-    e.getComponent<PositionComponent>().setY(20);
-
-    std::cout << e.getComponent<PositionComponent>().getX() << std::endl;
-
+    UNUSED(ac);
+    UNUSED(av);
+    int a = add(5, 6);
     std::cout << "Hello World!" << std::endl;
     std::cout << "My IP is: " << getAddress() << std::endl;
 }
