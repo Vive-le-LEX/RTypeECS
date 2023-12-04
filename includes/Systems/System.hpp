@@ -15,9 +15,7 @@
 
 #include "Types.hpp"
 
-namespace EpiCS::Systems {
-    class System {
+class System {
     public:
-        std::set<Entity> entities;
-    };
-}// namespace EpiCS::Systems
+    std::set<Entity> entities;
+};

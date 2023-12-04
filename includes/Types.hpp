@@ -14,22 +14,9 @@
 #include <bitset>
 #include <cinttypes>
 
-namespace EpiCS {
+using ComponentType = std::uint8_t;
+const ComponentType MAX_COMPONENTS = 32;
+using Signature = std::bitset<MAX_COMPONENTS>;
 
-#pragma region ComponentsTypes
-
-    using ComponentType = std::uint8_t;
-
-    const ComponentType MAX_COMPONENTS = 32;
-
-    using Signature = std::bitset<MAX_COMPONENTS>;
-
-#pragma endregion ComponentsTypes
-
-#pragma region EntityTypes
-    using Entity = std::uint64_t;
-
-    const Entity MAX_ENTITIES = 5000;
-#pragma endregion EntityTypes
-
-} // namespace EpiCS
+using Entity = std::uint64_t;
+const Entity MAX_ENTITIES = 5000;

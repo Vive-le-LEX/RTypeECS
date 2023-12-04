@@ -13,10 +13,8 @@
 
 #include "Types.hpp"
 
-namespace EpiCS::Components {
-    class IComponentArray {
-    public:
-        virtual ~IComponentArray() = default;
-	    virtual void safeRemove(const Entity &entity) noexcept = 0;
-    };
-}// namespace EpiCS::Components
+class IComponentArray {
+public:
+    virtual ~IComponentArray() = default;
+    virtual void safeRemove(const Entity &entity) noexcept = 0;
+};
