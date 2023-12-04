@@ -10,7 +10,7 @@
 #include <asio.hpp>
 #include <iostream>
 
-#define UNUSED(x) (void)(x)
+#define UNUSED(x) (void) (x)
 
 namespace ip = asio::ip;
 
@@ -24,7 +24,6 @@ std::string getAddress() {
 int main(int ac, char **av) {
     UNUSED(ac);
     UNUSED(av);
-    int a = add(5, 6);
     std::cout << "Hello World!" << std::endl;
     std::cout << "My IP is: " << getAddress() << std::endl;
 }

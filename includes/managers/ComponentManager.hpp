@@ -56,9 +56,7 @@ namespace EpiCS::Managers {
         }
 
         void entityDestroyed(const Entity &entity) {
-            for (auto const &pair: componentArrays) {
-                auto const &component = pair.second;
-
+            for (auto const &[_, component]: componentArrays) {
                 component->safeRemove(entity);
             }
         }

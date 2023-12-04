@@ -28,8 +28,11 @@ set(SRC
         includes/managers/EntityManager.hpp
         includes/Types.hpp
         includes/managers/ComponentManager.hpp
-        includes/components/IComponentArray.hpp
-        includes/components/ComponentArray.hpp
+        includes/componentsArray/IComponentArray.hpp
+        includes/componentsArray/ComponentArray.hpp
+        includes/systems/System.hpp
+        includes/managers/SystemManager.hpp
+        includes/Coordinator.hpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC} ${SRC_MAIN})
