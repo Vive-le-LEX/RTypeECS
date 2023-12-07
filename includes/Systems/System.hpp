@@ -11,12 +11,11 @@
 
 #pragma once
 
-#include <bitset>
-#include <cinttypes>
+#include <set>
 
-using ComponentType = std::uint8_t;
-const ComponentType MAX_COMPONENTS = 32;
-using Signature = std::bitset<MAX_COMPONENTS>;
+#include "Types.hpp"
 
-using Entity = std::uint64_t;
-const Entity MAX_ENTITIES = 5000;
+class System {
+    public:
+    std::set<Entity> entities;
+};
