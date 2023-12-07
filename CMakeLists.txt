@@ -1,6 +1,10 @@
-
 cmake_minimum_required(VERSION 3.10)
-project(rtype-ecs VERSION 1.0)
+project(rtype-ecs
+    VERSION 1.0.0
+    DESCRIPTION "RTypeECS"
+    LANGUAGES CXX)
+
+include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -21,13 +25,6 @@ install(
     DESTINATION include
 )
 
-install(
-    FILES
-        ${PROJECT_NAME}Config.cmake
-        ${PROJECT_NAME}ConfigVersion.cmake
-    DESTINATION lib/cmake/${PROJECT_NAME}
-)
-
 if (IS_TESTING AND NOT WIN32)
     include(CTest)
 
@@ -42,7 +39,7 @@ if (IS_TESTING AND NOT WIN32)
 
     target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)
 
-    target_include_directories(${TEST_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/)
+    target_include_directories(${TEST_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/RTypeECS)
 
     include(GoogleTest)
     gtest_discover_tests(${TEST_PROJECT_NAME})
