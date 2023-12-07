@@ -6,13 +6,14 @@
 */
 
 #include <gtest/gtest.h>
+#include "RTypeECS/Types.hpp"
 
-int add(int a, int b)
+Entity addEntity(Entity a, Entity b)
 {
     return a + b;
 }
 
-TEST(add, test1)
+TEST(addEntity, test1)
 {
-    EXPECT_EQ(add(1, 1), 2);
+    EXPECT_EQ(addEntity(898, 2), 900);
 }
