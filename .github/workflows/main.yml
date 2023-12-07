@@ -1,0 +1,37 @@
+name: Main CI
+
+on: [push, pull_request]
+
+jobs:
+    build:
+        name: ${{ matrix.platform.name }}
+        runs-on: ${{ matrix.platform.os }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                platform:
+                - { name: Windows VS2019, os: windows-2019  }
+                - { name: Windows VS2022, os: windows-2022  }
+                - { name: Linux GCC,      os: ubuntu-latest }
+                - { name: Linux Clang,    os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+                - { name: macOS,          os: macos-latest  }
+
+        steps:
+        - uses: actions/checkout@v3
+
+        - name: Create build directory
+          run: mkdir build |
+                cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install -DIS_TESTING:BOOL=TRUE ${{matrix.platform.flags}}
+
+        - name: Build
+          shell: bash
+          run: cmake --build build --config Release
+
+        - name: Install
+          shell: bash
+          run: cmake --install build --config Release
+
+        - name: Test
+          shell: bash
+          run: cmake -P test.cmake
