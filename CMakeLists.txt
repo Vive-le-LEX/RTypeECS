@@ -39,7 +39,7 @@ if (IS_TESTING AND NOT WIN32)
 
     target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)
 
-    target_include_directories(${TEST_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/RTypeECS)
+    target_include_directories(${TEST_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/)
 
     include(GoogleTest)
     gtest_discover_tests(${TEST_PROJECT_NAME})
