@@ -19,26 +19,22 @@
 #include "RTypeECS/Singleton.hpp"
 
 #include <iostream>
+#include <memory>
+#include <functional>
 
 class Coordinator {
 public:
     Coordinator() {
-        entityManager = new EntityManager();
-        componentManager = new ComponentManager();
-        systemManager = new SystemManager();
+        entityManager = std::make_unique<EntityManager>();
+        componentManager = std::make_unique<ComponentManager>();
+        systemManager = std::make_unique<SystemManager>();
     };
-
-    ~Coordinator() {
-        delete entityManager;
-        delete componentManager;
-        delete systemManager;
-    }
 
     Entity createEntity() {
         return entityManager->createEntity();
     }
 
-    void destroyEntity(const Entity &entity) {
+    void destroyEntity(const Entity entity) {
         entityManager->destroyEntity(entity);
 
         systemManager->destroyEntity(entity);
@@ -47,33 +43,33 @@ public:
     }
 
     template<typename T>
-    void registerComponent() {
-        componentManager->registerComponent<T>();
+    void registerComponent(std::function<void(T &)> deleteFunction) {
+        componentManager->registerComponent<T>(deleteFunction);
     }
 
     template<typename T>
-    void addComponent(const Entity &entity, const T &component) {
+    void addComponent(const Entity entity, const T component) {
         componentManager->addComponent<T>(entity, component);
 
         updateSignature<T>(entity, 1);
     }
 
     template<typename T>
-    void removeComponent(const Entity &entity) {
+    void removeComponent(const Entity entity) {
         componentManager->removeComponent<T>(entity);
 
         updateSignature<T>(entity, 0);
     }
 
     template<typename T>
-    void copyComponent(const Entity &src, const Entity &dst) {
+    void copyComponent(const Entity src, const Entity dst) {
         componentManager->copyComponent<T>(src, dst);
 
         updateSignature<T>(dst, 1);
     }
 
     template<typename T>
-    T& getComponent(const Entity &entity) {
+    T& getComponent(const Entity entity) {
         return componentManager->getComponent<T>(entity);
     }
 
@@ -92,9 +88,9 @@ public:
         systemManager->setSignature<T>(signature);
     }
 private:
-    EntityManager *entityManager;
-    SystemManager *systemManager;
-    ComponentManager *componentManager;
+    std::unique_ptr<EntityManager> entityManager;
+    std::unique_ptr<SystemManager> systemManager;
+    std::unique_ptr<ComponentManager> componentManager;
 
     template<typename T>
     inline void updateSignature(const Entity &entity, bool value) {

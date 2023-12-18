@@ -30,14 +30,14 @@ class SystemManager {
         }
 
         template<typename T>
-        void setSignature(const Signature &signature) {
+        void setSignature(const Signature signature) {
             std::size_t hashCode = typeid(T).hash_code();
             assert(systems.find(hashCode) != systems.end() && "System used before registered.");
 
             signatures.insert({hashCode, signature});
         }
 
-        void destroyEntity(const Entity &entity) {
+        void destroyEntity(const Entity entity) {
             for (auto const& pair : systems) {
                 auto const& system = pair.second;
 
@@ -45,7 +45,7 @@ class SystemManager {
             }
         }
 
-        void entitySignatureChanged(const Entity &entity, const Signature &entitySignature) {
+        void entitySignatureChanged(const Entity entity, const Signature entitySignature) {
             for (auto const& pair : systems) {
                 auto const& type = pair.first;
                 auto const& system = pair.second;

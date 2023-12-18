@@ -14,55 +14,73 @@
 #include <array>
 #include <cassert>
 #include <unordered_map>
+#include <set>
+#include <iostream>
+#include <functional>
 
 #include "IComponentArray.hpp"
 
 template<typename T>
 class ComponentArray : public IComponentArray {
 public:
-    void insert(const Entity &entity, const T &component) {
-        assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component added to same entity more than once.");
+
+    ComponentArray(std::function<void(T &component)> delFunc) : deleteFunction(
+            delFunc) {}
+
+    void insert(const Entity entity, const T component) {
+        assert(entityToIndexMap.find(entity) == entityToIndexMap.end() &&
+               "Component added to same entity more than once.");
 
         size_t newIndex = totalSize;
         entityToIndexMap[entity] = newIndex;
-        indexToEntityMap[newIndex] = entity;
+        indexToEntityMap[newIndex].insert(entity);
         componentArray[newIndex] = component;
         ++totalSize;
     }
 
-    void remove(const Entity &entity) {
-        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Removing non-existent component.");
+    void remove(const Entity entity) {
+        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() &&
+               "Removing non-existent component.");
 
-        size_t &indexToRemove = entityToIndexMap[entity];
+        size_t indexToRemove = entityToIndexMap[entity];
         size_t indexOfLastElement = totalSize - 1;
-        componentArray[indexToRemove] = componentArray[indexOfLastElement];
 
-        Entity &lastEntityElement = indexToEntityMap[indexOfLastElement];
-        entityToIndexMap[lastEntityElement] = indexToRemove;
-        indexToEntityMap[indexToRemove] = lastEntityElement;
+        if (indexToEntityMap[indexToRemove].size() == 1) {
+            auto &component = componentArray[indexToRemove];
+            componentArray[indexToRemove] = componentArray[indexOfLastElement];
+            auto lastElements = indexToEntityMap[indexOfLastElement];
+            for (auto &en: lastElements) {
+                entityToIndexMap[en] = indexToRemove;
+            }
+            indexToEntityMap[indexToRemove] = lastElements;
+            deleteFunction(component);
+            --totalSize;
+        } else {
+            indexToEntityMap[indexToRemove].erase(entity);
+        }
 
-        entityToIndexMap.erase(entity);
-        indexToEntityMap.erase(indexToRemove);
-
-        --totalSize;
     }
 
-    void copy(const Entity &src, const Entity &dst) {
-        assert(entityToIndexMap.find(src) != entityToIndexMap.end() && "Copying non-existent component.");
-        assert(entityToIndexMap.find(dst) == entityToIndexMap.end() && "Copying to an already existing component.");
+    void copy(const Entity src, const Entity dst) {
+        assert(entityToIndexMap.find(src) != entityToIndexMap.end() &&
+               "Copying non-existent component.");
+        assert(entityToIndexMap.find(dst) == entityToIndexMap.end() &&
+               "Copying to an already existing component.");
 
-        size_t &indexToCopy = entityToIndexMap[src];
+        size_t indexToCopy = entityToIndexMap[src];
         entityToIndexMap[dst] = indexToCopy;
-        indexToEntityMap[indexToCopy] = dst;
+        indexToEntityMap[indexToCopy].insert(dst);
+
     }
 
-    T &getComponent(const Entity &entity) {
-        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Retrieving non-existent component.");
+    T &getComponent(const Entity entity) {
+        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() &&
+               "Retrieving non-existent component.");
 
         return componentArray[entityToIndexMap[entity]];
     }
 
-    void safeRemove(const Entity &entity) noexcept final {
+    void safeRemove(const Entity entity) noexcept final {
         if (entityToIndexMap.find(entity) != entityToIndexMap.end())
             remove(entity);
     }
@@ -70,6 +88,7 @@ public:
 private:
     std::array<T, MAX_ENTITIES> componentArray;
     std::unordered_map<Entity, size_t> entityToIndexMap;
-    std::unordered_map<size_t, Entity> indexToEntityMap;
+    std::unordered_map<size_t, std::set<Entity>> indexToEntityMap;
+    std::function<void(T &)> deleteFunction;
     size_t totalSize = 0;
 };

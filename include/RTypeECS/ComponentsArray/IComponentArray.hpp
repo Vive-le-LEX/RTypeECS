@@ -16,5 +16,5 @@
 class IComponentArray {
 public:
     virtual ~IComponentArray() = default;
-    virtual void safeRemove(const Entity &entity) noexcept = 0;
+    virtual void safeRemove(const Entity entity) noexcept = 0;
 };
