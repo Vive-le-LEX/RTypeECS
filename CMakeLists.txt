@@ -8,33 +8,13 @@ include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 
 include(external/CMakeLists.txt)
 
 add_library(${PROJECT_NAME} INTERFACE)
 
-target_include_directories(${PROJECT_NAME} INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
-
-install(
-    DIRECTORY include/
-    DESTINATION include
-)
-
-install(
-    TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}-targets
-)
-
-install(
-    EXPORT ${PROJECT_NAME}-targets
-    FILE ${PROJECT_NAME}-targets.cmake
-    DESTINATION lib/cmake/${PROJECT_NAME}
-)
+target_include_directories(${PROJECT_NAME} INTERFACE ./include)
 
 if (IS_TESTING AND NOT WIN32)
     include(CTest)
