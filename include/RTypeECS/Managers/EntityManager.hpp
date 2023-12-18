@@ -16,7 +16,7 @@
 #include <cinttypes>
 #include <queue>
 
-#include "Types.hpp"
+#include "RTypeECS/Types.hpp"
 
 class EntityManager {
 public:

@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Types.hpp"
+#include "RTypeECS/Types.hpp"
 
 class IComponentArray {
 public:

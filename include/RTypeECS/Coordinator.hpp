@@ -11,14 +11,16 @@
 
 #pragma once
 
-#include "Types.hpp"
+#include "RTypeECS/Types.hpp"
 
-#include "SystemManager.hpp"
-#include "EntityManager.hpp"
-#include "ComponentManager.hpp"
-#include "Singleton.hpp"
+#include "RTypeECS/Managers/SystemManager.hpp"
+#include "RTypeECS/Managers/EntityManager.hpp"
+#include "RTypeECS/Managers/ComponentManager.hpp"
+#include "RTypeECS/Singleton.hpp"
 
-class Coordinator : public Singleton<Coordinator> {
+#include <iostream>
+
+class Coordinator {
 public:
     Coordinator() {
         entityManager = new EntityManager();
@@ -36,7 +38,7 @@ public:
         return entityManager->createEntity();
     }
 
-    void destroyEntity(Entity entity) {
+    void destroyEntity(const Entity &entity) {
         entityManager->destroyEntity(entity);
 
         systemManager->destroyEntity(entity);
@@ -50,29 +52,28 @@ public:
     }
 
     template<typename T>
-    void addComponent(Entity entity, T component) {
+    void addComponent(const Entity &entity, const T &component) {
         componentManager->addComponent<T>(entity, component);
 
-        auto signature = entityManager->getSignature(entity);
-        signature.set(componentManager->getComponentType<T>(), true);
-        entityManager->setSignature(entity, signature);
-
-        systemManager->entitySignatureChanged(entity, signature);
+        updateSignature<T>(entity, 1);
     }
 
     template<typename T>
-    void removeComponent(Entity entity) {
+    void removeComponent(const Entity &entity) {
         componentManager->removeComponent<T>(entity);
 
-        auto signature = entityManager->getSignature(entity);
-        signature.set(componentManager->getComponentType<T>(), false);
-        entityManager->setSignature(entity, signature);
-
-        systemManager->entitySignatureChanged(entity, signature);
+        updateSignature<T>(entity, 0);
     }
 
     template<typename T>
-    T& getComponent(Entity entity) {
+    void copyComponent(const Entity &src, const Entity &dst) {
+        componentManager->copyComponent<T>(src, dst);
+
+        updateSignature<T>(dst, 1);
+    }
+
+    template<typename T>
+    T& getComponent(const Entity &entity) {
         return componentManager->getComponent<T>(entity);
     }
 
@@ -87,11 +88,20 @@ public:
     }
 
     template<typename T>
-    void setSystemSignature(Signature signature) {
+    void setSystemSignature(const Signature &signature) {
         systemManager->setSignature<T>(signature);
     }
 private:
     EntityManager *entityManager;
     SystemManager *systemManager;
     ComponentManager *componentManager;
+
+    template<typename T>
+    inline void updateSignature(const Entity &entity, bool value) {
+        auto signature = entityManager->getSignature(entity);
+        signature.set(componentManager->getComponentType<T>(), value);
+        entityManager->setSignature(entity, signature);
+
+        systemManager->entitySignatureChanged(entity, signature);
+    }
 };

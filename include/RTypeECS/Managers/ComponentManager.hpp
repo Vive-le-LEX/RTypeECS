@@ -16,9 +16,9 @@
 #include <typeinfo>
 #include <unordered_map>
 
-#include "ComponentArray.hpp"
-#include "IComponentArray.hpp"
-#include "Types.hpp"
+#include "RTypeECS/ComponentsArray/ComponentArray.hpp"
+#include "RTypeECS/ComponentsArray/IComponentArray.hpp"
+#include "RTypeECS/Types.hpp"
 
 class ComponentManager {
 public:
@@ -51,6 +51,11 @@ public:
     }
 
     template<typename T>
+    void copyComponent(const Entity &src, const Entity &dst) {
+        getComponentArray<T>()->copy(src, dst);
+    }
+
+    template<typename T>
     T &getComponent(const Entity &entity) {
         return getComponentArray<T>()->getComponent(entity);
     }
@@ -62,8 +67,8 @@ public:
     }
 
 private:
+    ComponentType nextComponentType = 0;
     std::unordered_map<std::size_t, ComponentType> componentTypes;
-    ComponentType nextComponentType{};
     std::unordered_map<std::size_t, IComponentArray *> componentArrays;
 
     template<typename T>

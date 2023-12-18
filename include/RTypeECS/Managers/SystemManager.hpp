@@ -13,9 +13,9 @@
 
 #include <memory>
 
-#include "Types.hpp"
-#include "System.hpp"
-#include "ComponentManager.hpp"
+#include "RTypeECS/Types.hpp"
+#include "RTypeECS/Systems/System.hpp"
+#include "RTypeECS/Managers/ComponentManager.hpp"
 
 class SystemManager {
     public:
@@ -30,14 +30,14 @@ class SystemManager {
         }
 
         template<typename T>
-        void setSignature(Signature signature) {
+        void setSignature(const Signature &signature) {
             std::size_t hashCode = typeid(T).hash_code();
             assert(systems.find(hashCode) != systems.end() && "System used before registered.");
 
             signatures.insert({hashCode, signature});
         }
 
-        void destroyEntity(Entity entity) {
+        void destroyEntity(const Entity &entity) {
             for (auto const& pair : systems) {
                 auto const& system = pair.second;
 
@@ -45,7 +45,7 @@ class SystemManager {
             }
         }
 
-        void entitySignatureChanged(Entity entity, Signature entitySignature) {
+        void entitySignatureChanged(const Entity &entity, const Signature &entitySignature) {
             for (auto const& pair : systems) {
                 auto const& type = pair.first;
                 auto const& system = pair.second;

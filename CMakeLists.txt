@@ -25,6 +25,17 @@ install(
     DESTINATION include
 )
 
+install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}-targets
+)
+
+install(
+    EXPORT ${PROJECT_NAME}-targets
+    FILE ${PROJECT_NAME}-targets.cmake
+    DESTINATION lib/cmake/${PROJECT_NAME}
+)
+
 if (IS_TESTING AND NOT WIN32)
     include(CTest)
 

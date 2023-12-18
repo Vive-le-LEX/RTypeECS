@@ -75,6 +75,8 @@
         "source_location": "cpp",
         "fstream": "cpp",
         "future": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "forward_list": "cpp",
+        "unordered_set": "cpp"
     },
 }

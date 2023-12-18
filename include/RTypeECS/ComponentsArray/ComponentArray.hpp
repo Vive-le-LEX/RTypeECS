@@ -47,6 +47,15 @@ public:
         --totalSize;
     }
 
+    void copy(const Entity &src, const Entity &dst) {
+        assert(entityToIndexMap.find(src) != entityToIndexMap.end() && "Copying non-existent component.");
+        assert(entityToIndexMap.find(dst) == entityToIndexMap.end() && "Copying to an already existing component.");
+
+        size_t &indexToCopy = entityToIndexMap[src];
+        entityToIndexMap[dst] = indexToCopy;
+        indexToEntityMap[indexToCopy] = dst;
+    }
+
     T &getComponent(const Entity &entity) {
         assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Retrieving non-existent component.");
 
