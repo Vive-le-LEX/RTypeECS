@@ -14,15 +14,19 @@ jobs:
                 - { name: Windows VS2019, os: windows-2019  }
                 - { name: Windows VS2022, os: windows-2022  }
                 - { name: Linux GCC,      os: ubuntu-latest }
-                - { name: Linux Clang,    os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+                - { name: Linux Clang,    os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DIS_TESTING:BOOL=TRUE }
                 - { name: macOS,          os: macos-latest  }
 
         steps:
         - uses: actions/checkout@v3
 
+        - if : matrix.platform.os == 'ubuntu-latest' && matrix.platform.name == 'Linux Clang'
+          name: Install Linux Dependencies
+          run: sudo apt-get install doxygen graphviz -y
+
         - name: Create build directory
           run: mkdir build |
-                cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install -DIS_TESTING:BOOL=TRUE ${{matrix.platform.flags}}
+                cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install -DIS_BUILDING_DOC=TRUE ${{matrix.platform.flags}}
 
         - name: Build
           shell: bash
@@ -35,3 +39,10 @@ jobs:
         - name: Test
           shell: bash
           run: cmake -P test.cmake
+
+        - name: Push documentation to GitHub Pages
+          if: matrix.platform.os == 'ubuntu-latest' && matrix.platform.name == 'Linux Clang'
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+              github_token: ${{ secrets.DEPLOY_KEY }}
+              publish_dir: ./docs/html

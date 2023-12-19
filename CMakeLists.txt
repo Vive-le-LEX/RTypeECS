@@ -6,6 +6,9 @@ project(rtype-ecs
 
 include(GNUInstallDirs)
 
+option(IS_TESTING "Enable testing" OFF)
+option(IS_BUILDING_DOC "Enable documentation" OFF)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
@@ -34,4 +37,8 @@ if (IS_TESTING AND NOT WIN32)
 
     include(GoogleTest)
     gtest_discover_tests(${TEST_PROJECT_NAME})
+endif()
+
+if (IS_BUILDING_DOC)
+    include(BuildDocs.cmake)
 endif()
