@@ -1,8 +1,23 @@
 
+
+
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in)
+    FetchContent_Declare(
+        doxygen-awesome-css
+        GIT_REPOSITORY https://github.com/jothepro/doxygen-awesome-css.git
+        GIT_TAG        main
+        SOURCE_DIR ""
+        BINARY_DIR ""
+    )
+    FetchContent_GetProperties(doxygen-awesome-css)
+    if(NOT doxygen-awesome-css_POPULATED)
+        FetchContent_Populate(doxygen-awesome-css)
+    endif()
+
     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in)
+    set(DOXYGEN_AWESOME_CSS_DIR ${doxygen-awesome-css_SOURCE_DIR})
 
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
     message("Doxygen build started")
@@ -11,9 +26,8 @@ if (DOXYGEN_FOUND)
 
     add_custom_target( doc_doxygen ALL
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMAND git clone git@github.com:jothepro/doxygen-awesome-css.git
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        COMMAND touch ${CMAKE_CURRENT_BINARY_DIR}/docs/.nojekyll
+        COMMAND touch ${CMAKE_CURRENT_BINARY_DIR}/docs/html/.nojekyll
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM )
 else (DOXYGEN_FOUND)
