@@ -34,7 +34,7 @@ public:
         return entityManager->createEntity();
     }
 
-    void destroyEntity(const Entity entity) {
+    void destroyEntity(const Entity &entity) {
         entityManager->destroyEntity(entity);
 
         systemManager->destroyEntity(entity);
@@ -48,28 +48,28 @@ public:
     }
 
     template<typename T>
-    void addComponent(const Entity entity, const T component) {
+    void addComponent(const Entity &entity, const T &component) {
         componentManager->addComponent<T>(entity, component);
 
         updateSignature<T>(entity, 1);
     }
 
     template<typename T>
-    void removeComponent(const Entity entity) {
+    void removeComponent(const Entity &entity) {
         componentManager->removeComponent<T>(entity);
 
         updateSignature<T>(entity, 0);
     }
 
     template<typename T>
-    void copyComponent(const Entity src, const Entity dst) {
+    void copyComponent(const Entity &src, const Entity &dst) {
         componentManager->copyComponent<T>(src, dst);
 
         updateSignature<T>(dst, 1);
     }
 
     template<typename T>
-    T& getComponent(const Entity entity) {
+    T& getComponent(const Entity &entity) {
         return componentManager->getComponent<T>(entity);
     }
 

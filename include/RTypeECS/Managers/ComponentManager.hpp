@@ -37,6 +37,17 @@ public:
         ++nextComponentType;
     }
 
+//    template<typename T>
+//    void registerComponent() {
+//        std::size_t hashCode = typeid(T).hash_code();
+//        assert(componentTypes.find(hashCode) == componentTypes.end() &&
+//               "Registering component type more than once.");
+//
+//        componentTypes[hashCode] = nextComponentType;
+//        componentArrays[hashCode] = std::make_shared<ComponentArray<T>>();
+//        ++nextComponentType;
+//    }
+
     template<typename T>
     ComponentType getComponentType() {
         std::size_t hashCode = typeid(T).hash_code();
@@ -47,26 +58,26 @@ public:
     }
 
     template<typename T>
-    void addComponent(const Entity entity, const T component) {
+    void addComponent(const Entity &entity, const T &component) {
         getComponentArray<T>()->insert(entity, component);
     }
 
     template<typename T>
-    void removeComponent(const Entity entity) {
+    void removeComponent(const Entity &entity) {
         getComponentArray<T>()->remove(entity);
     }
 
     template<typename T>
-    void copyComponent(const Entity src, const Entity dst) {
+    void copyComponent(const Entity &src, const Entity &dst) {
         getComponentArray<T>()->copy(src, dst);
     }
 
     template<typename T>
-    T &getComponent(const Entity entity) {
+    T &getComponent(const Entity &entity) {
         return getComponentArray<T>()->getComponent(entity);
     }
 
-    void destroyEntity(const Entity entity) {
+    void destroyEntity(const Entity &entity) {
         for (auto const &[_, component]: componentArrays) {
             component->safeRemove(entity);
         }

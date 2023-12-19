@@ -58,7 +58,6 @@ public:
         } else {
             indexToEntityMap[indexToRemove].erase(entity);
         }
-
     }
 
     void copy(const Entity src, const Entity dst) {
@@ -70,7 +69,6 @@ public:
         size_t indexToCopy = entityToIndexMap[src];
         entityToIndexMap[dst] = indexToCopy;
         indexToEntityMap[indexToCopy].insert(dst);
-
     }
 
     T &getComponent(const Entity entity) {
@@ -80,7 +78,7 @@ public:
         return componentArray[entityToIndexMap[entity]];
     }
 
-    void safeRemove(const Entity entity) noexcept final {
+    void safeRemove(const Entity &entity) noexcept final {
         if (entityToIndexMap.find(entity) != entityToIndexMap.end())
             remove(entity);
     }
