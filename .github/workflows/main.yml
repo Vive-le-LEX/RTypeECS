@@ -41,8 +41,8 @@ jobs:
           run: cmake -P test.cmake
 
         - name: Push documentation to GitHub Pages
-          if: matrix.platform.os == 'ubuntu-latest' && matrix.platform.name == 'Linux Clang'
+          if: matrix.platform.os == 'ubuntu-latest' && matrix.platform.name == 'Linux Clang' && github.ref == 'refs/heads/main'
           uses: peaceiris/actions-gh-pages@v3
           with:
-              github_token: ${{ secrets.DEPLOY_KEY }}
+              deploy_key: ${{ secrets.DEPLOY_KEY }}
               publish_dir: ./docs/html
