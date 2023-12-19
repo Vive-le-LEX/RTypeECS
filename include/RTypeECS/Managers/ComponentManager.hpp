@@ -37,17 +37,6 @@ public:
         ++nextComponentType;
     }
 
-//    template<typename T>
-//    void registerComponent() {
-//        std::size_t hashCode = typeid(T).hash_code();
-//        assert(componentTypes.find(hashCode) == componentTypes.end() &&
-//               "Registering component type more than once.");
-//
-//        componentTypes[hashCode] = nextComponentType;
-//        componentArrays[hashCode] = std::make_shared<ComponentArray<T>>();
-//        ++nextComponentType;
-//    }
-
     template<typename T>
     ComponentType getComponentType() {
         std::size_t hashCode = typeid(T).hash_code();
