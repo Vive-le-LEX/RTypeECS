@@ -15,6 +15,7 @@
 #include <cassert>
 #include <cinttypes>
 #include <queue>
+#include <iostream>
 
 #include "RTypeECS/Types.hpp"
 
@@ -26,10 +27,11 @@ public:
         }
     };
 
-    const Entity &createEntity() {
-        assert(entityCount < MAX_ENTITIES && "Too many entities have been loaded.");
+    const Entity createEntity() {
+        assert(entityCount < MAX_ENTITIES &&
+               "Too many entities have been loaded.");
 
-        Entity &newId = availableEntities.front();
+        Entity newId = availableEntities.front();
         availableEntities.pop();
         ++entityCount;
 

@@ -19,20 +19,16 @@
 #include "RTypeECS/Singleton.hpp"
 
 #include <iostream>
+#include <memory>
+#include <functional>
 
 class Coordinator {
 public:
     Coordinator() {
-        entityManager = new EntityManager();
-        componentManager = new ComponentManager();
-        systemManager = new SystemManager();
+        entityManager = std::make_unique<EntityManager>();
+        componentManager = std::make_unique<ComponentManager>();
+        systemManager = std::make_unique<SystemManager>();
     };
-
-    ~Coordinator() {
-        delete entityManager;
-        delete componentManager;
-        delete systemManager;
-    }
 
     Entity createEntity() {
         return entityManager->createEntity();
@@ -47,8 +43,8 @@ public:
     }
 
     template<typename T>
-    void registerComponent() {
-        componentManager->registerComponent<T>();
+    void registerComponent(std::function<void(T &)> deleteFunction) {
+        componentManager->registerComponent<T>(deleteFunction);
     }
 
     template<typename T>
@@ -92,9 +88,9 @@ public:
         systemManager->setSignature<T>(signature);
     }
 private:
-    EntityManager *entityManager;
-    SystemManager *systemManager;
-    ComponentManager *componentManager;
+    std::unique_ptr<EntityManager> entityManager;
+    std::unique_ptr<SystemManager> systemManager;
+    std::unique_ptr<ComponentManager> componentManager;
 
     template<typename T>
     inline void updateSignature(const Entity &entity, bool value) {
