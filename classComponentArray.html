@@ -102,18 +102,21 @@ Inheritance diagram for ComponentArray&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a02beb4bcee4cf913b31d8cde9e113244"><td class="memItemLeft" align="right" valign="top"><a id="a02beb4bcee4cf913b31d8cde9e113244"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>insert</b> (const Entity &amp;entity, const T &amp;component)</td></tr>
-<tr class="separator:a02beb4bcee4cf913b31d8cde9e113244"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8faafd2676ccb20c1d081b217a6d4d8"><td class="memItemLeft" align="right" valign="top"><a id="aa8faafd2676ccb20c1d081b217a6d4d8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> (const Entity &amp;entity)</td></tr>
-<tr class="separator:aa8faafd2676ccb20c1d081b217a6d4d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a362438805c0f3d16fdc409251c85adf5"><td class="memItemLeft" align="right" valign="top"><a id="a362438805c0f3d16fdc409251c85adf5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> (const Entity &amp;src, const Entity &amp;dst)</td></tr>
-<tr class="separator:a362438805c0f3d16fdc409251c85adf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cbb79b62e5d4ae36572eddfedf0fb6d"><td class="memItemLeft" align="right" valign="top"><a id="a9cbb79b62e5d4ae36572eddfedf0fb6d"></a>
-T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getComponent</b> (const Entity &amp;entity)</td></tr>
-<tr class="separator:a9cbb79b62e5d4ae36572eddfedf0fb6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae26a7694d29a27751dc88a255def9486"><td class="memItemLeft" align="right" valign="top"><a id="ae26a7694d29a27751dc88a255def9486"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentArray</b> (std::function&lt; void(T &amp;component)&gt; delFunc)</td></tr>
+<tr class="separator:ae26a7694d29a27751dc88a255def9486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c61f46e039461621cc975349badebcb"><td class="memItemLeft" align="right" valign="top"><a id="a8c61f46e039461621cc975349badebcb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>insert</b> (const Entity entity, const T component)</td></tr>
+<tr class="separator:a8c61f46e039461621cc975349badebcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9764a18afcba741091e958fdca89e83e"><td class="memItemLeft" align="right" valign="top"><a id="a9764a18afcba741091e958fdca89e83e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> (const Entity entity)</td></tr>
+<tr class="separator:a9764a18afcba741091e958fdca89e83e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2446f88bd9559d8b9cdfea7ea900d3"><td class="memItemLeft" align="right" valign="top"><a id="a3a2446f88bd9559d8b9cdfea7ea900d3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> (const Entity src, const Entity dst)</td></tr>
+<tr class="separator:a3a2446f88bd9559d8b9cdfea7ea900d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90071c521f4f704ea1eb476a458673f0"><td class="memItemLeft" align="right" valign="top"><a id="a90071c521f4f704ea1eb476a458673f0"></a>
+T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getComponent</b> (const Entity entity)</td></tr>
+<tr class="separator:a90071c521f4f704ea1eb476a458673f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a643fb6169f1ef5189554fa1df8896355"><td class="memItemLeft" align="right" valign="top"><a id="a643fb6169f1ef5189554fa1df8896355"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>safeRemove</b> (const Entity &amp;entity) noexcept final</td></tr>
 <tr class="separator:a643fb6169f1ef5189554fa1df8896355"><td class="memSeparator" colspan="2">&#160;</td></tr>
