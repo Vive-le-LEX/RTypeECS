@@ -89,7 +89,7 @@ public:
     }
 
     template<typename T>
-    T *getSystem() {
+    T &getSystem() {
         return systemManager->getSystem<T>();
     }
 private:

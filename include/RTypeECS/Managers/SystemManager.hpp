@@ -64,7 +64,7 @@ class SystemManager {
             std::size_t hashCode = typeid(T).hash_code();
             assert(systems.find(hashCode) != systems.end() && "System used before registered.");
 
-            return *static_cast<T *>(systems[hashCode].get());
+            return *std::static_pointer_cast<T>(systems[hashCode]);
         }
 
     private:
