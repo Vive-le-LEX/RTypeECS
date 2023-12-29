@@ -148,11 +148,19 @@ $(document).ready(function(){initNavTree('SystemManager_8hpp_source.html',''); i
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        std::unordered_map&lt;std::size_t, Signature&gt; signatures = {};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        std::unordered_map&lt;std::size_t, std::shared_ptr&lt;System&gt;&gt; systems = {};</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        T &amp;getSystem() {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            std::size_t hashCode = <span class="keyword">typeid</span>(T).hash_code();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            assert(systems.find(hashCode) != systems.end() &amp;&amp; <span class="stringliteral">&quot;System used before registered.&quot;</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">static_cast&lt;</span>T *<span class="keyword">&gt;</span>(systems[hashCode].get());</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        std::unordered_map&lt;std::size_t, Signature&gt; signatures = {};</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        std::unordered_map&lt;std::size_t, std::shared_ptr&lt;System&gt;&gt; systems = {};</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
 <div class="ttc" id="aclassSystemManager_html"><div class="ttname"><a href="classSystemManager.html">SystemManager</a></div><div class="ttdef"><b>Definition:</b> SystemManager.hpp:20</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

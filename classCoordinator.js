@@ -7,6 +7,7 @@ var classCoordinator =
     [ "destroyEntity", "classCoordinator.html#ab28fde692b80cbfdb4e48bfba11b6285", null ],
     [ "getComponent", "classCoordinator.html#a8da97d1095d407882e710cb98ef4d0ac", null ],
     [ "getComponentType", "classCoordinator.html#aad97fea206e5ba9c0b209ee87c6aa5fe", null ],
+    [ "getSystem", "classCoordinator.html#a45f25b69b029ffee0cb7221873b25c8b", null ],
     [ "registerComponent", "classCoordinator.html#acc5d0c51f765952bd652b6f329add970", null ],
     [ "registerSystem", "classCoordinator.html#a3f1bcd1e870e5eb78a5d3ecb007453d1", null ],
     [ "removeComponent", "classCoordinator.html#a56998b15fe8084f703f0c8e583a687e2", null ],
