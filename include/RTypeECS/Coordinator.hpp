@@ -91,6 +91,11 @@ public:
     void setSystemSignature(const Signature &signature) {
         systemManager->setSignature<T>(signature);
     }
+
+    template<typename T>
+    T *getSystem() {
+        return systemManager->getSystem<T>();
+    }
 private:
     EntityManager *entityManager;
     SystemManager *systemManager;

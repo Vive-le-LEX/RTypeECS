@@ -59,6 +59,14 @@ class SystemManager {
             }
         }
 
+        template<typename T>
+        T &getSystem() {
+            std::size_t hashCode = typeid(T).hash_code();
+            assert(systems.find(hashCode) != systems.end() && "System used before registered.");
+
+            return *static_cast<T *>(systems[hashCode].get());
+        }
+
     private:
         std::unordered_map<std::size_t, Signature> signatures = {};
 

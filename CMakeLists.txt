@@ -40,5 +40,5 @@ if (IS_TESTING AND NOT WIN32)
 endif()
 
 if (IS_BUILDING_DOC)
-    include(BuildDocs.cmake)
+    include(docs/BuildDocs.cmake)
 endif()

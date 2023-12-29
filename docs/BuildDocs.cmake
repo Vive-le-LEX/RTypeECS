@@ -1,7 +1,5 @@
-
-
-
 find_package(Doxygen)
+
 if (DOXYGEN_FOUND)
     FetchContent_Declare(
         doxygen-awesome-css
