@@ -5,6 +5,8 @@ var classCoordinator =
     [ "copyComponent", "classCoordinator.html#a3ee634a6832b12c742b8abbc25449f5e", null ],
     [ "createEntity", "classCoordinator.html#ada9b6182047cfc657aff195cdbb19270", null ],
     [ "destroyEntity", "classCoordinator.html#ab28fde692b80cbfdb4e48bfba11b6285", null ],
+    [ "disableEntity", "classCoordinator.html#ac05e1dabb60deecdc734620fe48f844f", null ],
+    [ "enableEntity", "classCoordinator.html#af8b6a7dd7fc94bc19d73a08f7dbe1185", null ],
     [ "getComponent", "classCoordinator.html#a8da97d1095d407882e710cb98ef4d0ac", null ],
     [ "getComponentType", "classCoordinator.html#aad97fea206e5ba9c0b209ee87c6aa5fe", null ],
     [ "getSystem", "classCoordinator.html#a70520e959492d19e6ccfcedd47e1e2c2", null ],
