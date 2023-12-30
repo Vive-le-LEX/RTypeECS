@@ -43,7 +43,7 @@ public:
     }
 
     template<typename T>
-    void registerComponent(std::function<void(T &)> deleteFunction) {
+    void registerComponent(const RemoveComponentFunction<T> &deleteFunction = std::nullopt) {
         componentManager->registerComponent<T>(deleteFunction);
     }
 

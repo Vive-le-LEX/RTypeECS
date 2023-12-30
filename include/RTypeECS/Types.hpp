@@ -12,7 +12,9 @@
 #pragma once
 
 #include <bitset>
+#include <optional>
 #include <cinttypes>
+#include <functional>
 
 using ComponentType = std::uint8_t;
 const ComponentType MAX_COMPONENTS = 32;
@@ -20,3 +22,6 @@ using Signature = std::bitset<MAX_COMPONENTS>;
 
 using Entity = std::uint64_t;
 const Entity MAX_ENTITIES = 5000;
+
+template<typename T>
+using RemoveComponentFunction = std::optional<std::function<void(T &)>>;

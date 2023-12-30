@@ -27,7 +27,7 @@ class ComponentManager {
 public:
 
     template<typename T>
-    void registerComponent(std::function<void(T &)> deleteFunction) {
+    void registerComponent(const RemoveComponentFunction<T> &deleteFunction) {
         std::size_t hashCode = typeid(T).hash_code();
         assert(componentTypes.find(hashCode) == componentTypes.end() &&
                "Registering component type more than once.");

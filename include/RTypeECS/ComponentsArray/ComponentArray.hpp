@@ -24,7 +24,7 @@ template<typename T>
 class ComponentArray : public IComponentArray {
 public:
 
-    ComponentArray(std::function<void(T &component)> delFunc) : deleteFunction(
+    ComponentArray(const RemoveComponentFunction<T> &delFunc) : deleteFunction(
             delFunc) {}
 
     void insert(const Entity entity, const T component) {
@@ -53,7 +53,8 @@ public:
                 entityToIndexMap[en] = indexToRemove;
             }
             indexToEntityMap[indexToRemove] = lastElements;
-            deleteFunction(component);
+            if (deleteFunction.has_value())
+                deleteFunction.value()(component);
             --totalSize;
         } else {
             indexToEntityMap[indexToRemove].erase(entity);
@@ -87,6 +88,6 @@ private:
     std::array<T, MAX_ENTITIES> componentArray;
     std::unordered_map<Entity, size_t> entityToIndexMap;
     std::unordered_map<size_t, std::set<Entity>> indexToEntityMap;
-    std::function<void(T &)> deleteFunction;
+    RemoveComponentFunction<T> deleteFunction;
     size_t totalSize = 0;
 };
