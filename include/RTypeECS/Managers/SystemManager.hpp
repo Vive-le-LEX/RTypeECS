@@ -60,6 +60,26 @@ class SystemManager {
         }
 
         template<typename T>
+        void disableEntity(const Entity &entity) {
+            std::size_t hashCode = typeid(T).hash_code();
+            assert(systems.find(hashCode) != systems.end() && "System used before registered.");
+            assert(systems[hashCode]->entities.find(entity) != systems[hashCode]->entities.end() && "Entity not found in system.");
+
+            auto const& system = systems[hashCode];
+            system->entities.erase(entity);
+        }
+
+        template<typename T>
+        void enableEntity(const Entity &entity) {
+            std::size_t hashCode = typeid(T).hash_code();
+            assert(systems.find(hashCode) != systems.end() && "System used before registered.");
+            assert(systems[hashCode]->entities.find(entity) == systems[hashCode]->entities.end() && "Entity already found in system.");
+
+            auto const& system = systems[hashCode];
+            system->entities.insert(entity);
+        }
+
+        template<typename T>
         T &getSystem() {
             std::size_t hashCode = typeid(T).hash_code();
             assert(systems.find(hashCode) != systems.end() && "System used before registered.");

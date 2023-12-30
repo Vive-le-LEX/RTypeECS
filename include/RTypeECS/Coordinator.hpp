@@ -92,6 +92,16 @@ public:
     T &getSystem() {
         return systemManager->getSystem<T>();
     }
+
+    template<typename T>
+    void disableEntity(const Entity &entity) {
+        systemManager->disableEntity<T>(entity);
+    }
+
+    template<typename T>
+    void enableEntity(const Entity &entity) {
+        systemManager->enableEntity<T>(entity);
+    }
 private:
     std::unique_ptr<EntityManager> entityManager;
     std::unique_ptr<SystemManager> systemManager;
