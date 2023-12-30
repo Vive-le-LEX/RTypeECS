@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('ComponentArray_8hpp_source.html',''); 
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classComponentArray.html">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="classComponentArray.html">ComponentArray</a> : <span class="keyword">public</span> <a class="code" href="classIComponentArray.html">IComponentArray</a> {</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="classComponentArray.html">ComponentArray</a>(std::function&lt;<span class="keywordtype">void</span>(T &amp;component)&gt; delFunc) : deleteFunction(</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="classComponentArray.html">ComponentArray</a>(<span class="keyword">const</span> RemoveComponentFunction&lt;T&gt; &amp;delFunc) : deleteFunction(</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            delFunc) {}</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">void</span> insert(<span class="keyword">const</span> Entity entity, <span class="keyword">const</span> T component) {</div>
@@ -142,43 +142,44 @@ $(document).ready(function(){initNavTree('ComponentArray_8hpp_source.html',''); 
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                entityToIndexMap[en] = indexToRemove;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            indexToEntityMap[indexToRemove] = lastElements;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            deleteFunction(component);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            --totalSize;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            indexToEntityMap[indexToRemove].erase(entity);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> copy(<span class="keyword">const</span> Entity src, <span class="keyword">const</span> Entity dst) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        assert(entityToIndexMap.find(src) != entityToIndexMap.end() &amp;&amp;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;               <span class="stringliteral">&quot;Copying non-existent component.&quot;</span>);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        assert(entityToIndexMap.find(dst) == entityToIndexMap.end() &amp;&amp;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;               <span class="stringliteral">&quot;Copying to an already existing component.&quot;</span>);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordtype">size_t</span> indexToCopy = entityToIndexMap[src];</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        entityToIndexMap[dst] = indexToCopy;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        indexToEntityMap[indexToCopy].insert(dst);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    T &amp;getComponent(<span class="keyword">const</span> Entity entity) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() &amp;&amp;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;               <span class="stringliteral">&quot;Retrieving non-existent component.&quot;</span>);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">return</span> componentArray[entityToIndexMap[entity]];</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> safeRemove(<span class="keyword">const</span> Entity &amp;entity) noexcept <span class="keyword">final</span> {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">if</span> (entityToIndexMap.find(entity) != entityToIndexMap.end())</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            remove(entity);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    std::array&lt;T, MAX_ENTITIES&gt; componentArray;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::unordered_map&lt;Entity, size_t&gt; entityToIndexMap;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    std::unordered_map&lt;size_t, std::set&lt;Entity&gt;&gt; indexToEntityMap;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    std::function&lt;void(T &amp;)&gt; deleteFunction;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">size_t</span> totalSize = 0;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">if</span> (deleteFunction.has_value())</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                deleteFunction.value()(component);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            --totalSize;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            indexToEntityMap[indexToRemove].erase(entity);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> copy(<span class="keyword">const</span> Entity src, <span class="keyword">const</span> Entity dst) {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        assert(entityToIndexMap.find(src) != entityToIndexMap.end() &amp;&amp;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;               <span class="stringliteral">&quot;Copying non-existent component.&quot;</span>);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        assert(entityToIndexMap.find(dst) == entityToIndexMap.end() &amp;&amp;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;               <span class="stringliteral">&quot;Copying to an already existing component.&quot;</span>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">size_t</span> indexToCopy = entityToIndexMap[src];</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        entityToIndexMap[dst] = indexToCopy;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        indexToEntityMap[indexToCopy].insert(dst);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    T &amp;getComponent(<span class="keyword">const</span> Entity entity) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() &amp;&amp;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;               <span class="stringliteral">&quot;Retrieving non-existent component.&quot;</span>);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> componentArray[entityToIndexMap[entity]];</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> safeRemove(<span class="keyword">const</span> Entity &amp;entity) noexcept <span class="keyword">final</span> {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">if</span> (entityToIndexMap.find(entity) != entityToIndexMap.end())</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            remove(entity);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::array&lt;T, MAX_ENTITIES&gt; componentArray;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    std::unordered_map&lt;Entity, size_t&gt; entityToIndexMap;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    std::unordered_map&lt;size_t, std::set&lt;Entity&gt;&gt; indexToEntityMap;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    RemoveComponentFunction&lt;T&gt; deleteFunction;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">size_t</span> totalSize = 0;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
 <div class="ttc" id="aclassComponentArray_html"><div class="ttname"><a href="classComponentArray.html">ComponentArray</a></div><div class="ttdef"><b>Definition:</b> ComponentArray.hpp:24</div></div>
 <div class="ttc" id="aclassIComponentArray_html"><div class="ttname"><a href="classIComponentArray.html">IComponentArray</a></div><div class="ttdef"><b>Definition:</b> IComponentArray.hpp:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
