@@ -18,77 +18,77 @@
 #include "RTypeECS/Managers/ComponentManager.hpp"
 
 class SystemManager {
-    public:
-        template<typename T>
-        std::shared_ptr<T> registerSystem() {
-            std::size_t hashCode = typeid(T).hash_code();
-            assert(systems.find(hashCode) == systems.end() && "Registering system type more than once.");
+public:
+    template<typename T>
+    std::shared_ptr<T> registerSystem() {
+        std::size_t hashCode = typeid(T).hash_code();
+        assert(systems.find(hashCode) == systems.end() && "Registering system type more than once.");
 
-            auto system = std::make_shared<T>();
-            systems.insert({hashCode, system});
-            return system;
+        auto system = std::make_shared<T>();
+        systems.insert({hashCode, system});
+        return system;
+    }
+
+    template<typename T>
+    void setSignature(const Signature &signature) {
+        std::size_t hashCode = typeid(T).hash_code();
+        assert(systems.find(hashCode) != systems.end() && "System used before registered.");
+
+        signatures.insert({hashCode, signature});
+    }
+
+    void destroyEntity(const Entity &entity) {
+        for (auto const& pair : systems) {
+            auto const& system = pair.second;
+
+            system->entities.extract(entity);
         }
+    }
 
-        template<typename T>
-        void setSignature(const Signature &signature) {
-            std::size_t hashCode = typeid(T).hash_code();
-            assert(systems.find(hashCode) != systems.end() && "System used before registered.");
+    void entitySignatureChanged(const Entity &entity, const Signature &entitySignature) {
+        for (auto const& pair : systems) {
+            auto const& type = pair.first;
+            auto const& system = pair.second;
+            auto const& systemSignature = signatures[type];
 
-            signatures.insert({hashCode, signature});
-        }
-
-        void destroyEntity(const Entity &entity) {
-            for (auto const& pair : systems) {
-                auto const& system = pair.second;
-
+            if ((entitySignature & systemSignature) == systemSignature) {
+                system->entities.insert(entity);
+            } else {
                 system->entities.erase(entity);
             }
         }
+    }
 
-        void entitySignatureChanged(const Entity &entity, const Signature &entitySignature) {
-            for (auto const& pair : systems) {
-                auto const& type = pair.first;
-                auto const& system = pair.second;
-                auto const& systemSignature = signatures[type];
+    template<typename T>
+    void disableEntity(const Entity &entity) {
+        std::size_t hashCode = typeid(T).hash_code();
+        assert(systems.find(hashCode) != systems.end() && "System used before registered.");
+        assert(systems[hashCode]->entities.find(entity) != systems[hashCode]->entities.end() && "Entity not found in system.");
 
-                if ((entitySignature & systemSignature) == systemSignature) {
-                    system->entities.insert(entity);
-                } else {
-                    system->entities.erase(entity);
-                }
-            }
-        }
+        auto const& system = systems[hashCode];
+        system->entities.erase(entity);
+    }
 
-        template<typename T>
-        void disableEntity(const Entity &entity) {
-            std::size_t hashCode = typeid(T).hash_code();
-            assert(systems.find(hashCode) != systems.end() && "System used before registered.");
-            assert(systems[hashCode]->entities.find(entity) != systems[hashCode]->entities.end() && "Entity not found in system.");
+    template<typename T>
+    void enableEntity(const Entity &entity) {
+        std::size_t hashCode = typeid(T).hash_code();
+        assert(systems.find(hashCode) != systems.end() && "System used before registered.");
+        assert(systems[hashCode]->entities.find(entity) == systems[hashCode]->entities.end() && "Entity already found in system.");
 
-            auto const& system = systems[hashCode];
-            system->entities.erase(entity);
-        }
+        auto const& system = systems[hashCode];
+        system->entities.insert(entity);
+    }
 
-        template<typename T>
-        void enableEntity(const Entity &entity) {
-            std::size_t hashCode = typeid(T).hash_code();
-            assert(systems.find(hashCode) != systems.end() && "System used before registered.");
-            assert(systems[hashCode]->entities.find(entity) == systems[hashCode]->entities.end() && "Entity already found in system.");
+    template<typename T>
+    T &getSystem() {
+        std::size_t hashCode = typeid(T).hash_code();
+        assert(systems.find(hashCode) != systems.end() && "System used before registered.");
 
-            auto const& system = systems[hashCode];
-            system->entities.insert(entity);
-        }
+        return *std::static_pointer_cast<T>(systems[hashCode]);
+    }
 
-        template<typename T>
-        T &getSystem() {
-            std::size_t hashCode = typeid(T).hash_code();
-            assert(systems.find(hashCode) != systems.end() && "System used before registered.");
+private:
+    std::unordered_map<std::size_t, Signature> signatures = {};
 
-            return *std::static_pointer_cast<T>(systems[hashCode]);
-        }
-
-    private:
-        std::unordered_map<std::size_t, Signature> signatures = {};
-
-        std::unordered_map<std::size_t, std::shared_ptr<System>> systems = {};
+    std::unordered_map<std::size_t, std::shared_ptr<System>> systems = {};
 };
