@@ -47,17 +47,25 @@ public:
 
         if (indexToEntityMap[indexToRemove].size() == 1) {
             auto &component = componentArray[indexToRemove];
-            componentArray[indexToRemove] = componentArray[indexOfLastElement];
-            auto lastElements = indexToEntityMap[indexOfLastElement];
-            for (auto &en: lastElements) {
-                entityToIndexMap[en] = indexToRemove;
-            }
-            indexToEntityMap[indexToRemove] = lastElements;
             if (deleteFunction.has_value())
                 deleteFunction.value()(component);
+            componentArray[indexToRemove] = componentArray[indexOfLastElement];
+            auto lastEntities = indexToEntityMap[indexOfLastElement];
+            for (auto const &en: lastEntities) {
+                entityToIndexMap[en] = indexToRemove;
+            }
+            indexToEntityMap[indexToRemove] = lastEntities;
+            indexToEntityMap.erase(indexOfLastElement);
+            entityToIndexMap.erase(entity);
             --totalSize;
+            std::cout << "At exit we got : " << std::endl;
+            for (auto const &[index, en]: entityToIndexMap) {
+                std::cout << "\tindex: " << index << std::endl;
+            }
         } else {
             indexToEntityMap[indexToRemove].erase(entity);
+            entityToIndexMap.erase(entity);
+
         }
     }
 
@@ -80,8 +88,14 @@ public:
     }
 
     void safeRemove(const Entity &entity) noexcept final {
-        if (entityToIndexMap.find(entity) != entityToIndexMap.end())
-            remove(entity);
+            std::cout << "Safe remove of comp : " << typeid(T).name() << std::endl;
+            for (auto const &[index, en]: entityToIndexMap) {
+                std::cout << "\tRemove index: " << index << std::endl;
+            }
+            if (entityToIndexMap.find(entity) != entityToIndexMap.end()) {
+                std::cout << "\tFind it so going to remove it " << std::endl;
+                remove(entity);
+            }
     }
 
 private:

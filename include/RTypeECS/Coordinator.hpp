@@ -35,11 +35,10 @@ public:
     }
 
     void destroyEntity(const Entity &entity) {
-        entityManager->destroyEntity(entity);
-
-        systemManager->destroyEntity(entity);
 
         componentManager->destroyEntity(entity);
+        systemManager->destroyEntity(entity);
+        entityManager->destroyEntity(entity);
     }
 
     template<typename T>

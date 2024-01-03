@@ -30,7 +30,6 @@ public:
     const Entity createEntity() {
         assert(entityCount < MAX_ENTITIES &&
                "Too many entities have been loaded.");
-
         Entity newId = availableEntities.front();
         availableEntities.pop();
         ++entityCount;
