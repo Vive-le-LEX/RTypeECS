@@ -98,6 +98,22 @@ public:
             }
     }
 
+    const T *getComponentArray() {
+        return componentArray.data();
+    }
+
+    const std::unordered_map<Entity, size_t> &getEntityToIndexMap() {
+        return entityToIndexMap;
+    }
+
+    const std::unordered_map<size_t, std::set<Entity>> &getIndexToEntityMap() {
+        return indexToEntityMap;
+    }
+
+    size_t getTotalSize() {
+        return totalSize;
+    }
+
 private:
     std::array<T, MAX_ENTITIES> componentArray;
     std::unordered_map<Entity, size_t> entityToIndexMap;

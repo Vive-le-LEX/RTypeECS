@@ -72,6 +72,26 @@ public:
         }
     }
 
+    template<typename T>
+    T *getComponentArrayPtr() {
+        return getComponentArray<T>().getComponentArray();
+    }
+
+    template<typename T>
+    const std::unordered_map<Entity, size_t> &getEntityToIndexMap() {
+        return getComponentArray<T>()->getEntityToIndexMap();
+    }
+
+    template<typename T>
+    const std::unordered_map<size_t, std::set<Entity>> &getIndexToEntityMap() {
+        return getComponentArray<T>()->getIndexToEntityMap();
+    }
+
+    template<typename T>
+    size_t getTotalSize() {
+        return getComponentArray<T>()->getTotalSize();
+    }
+
 private:
     ComponentType nextComponentType = 0;
     std::unordered_map<std::size_t, ComponentType> componentTypes;
