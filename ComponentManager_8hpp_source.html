@@ -162,17 +162,17 @@ $(document).ready(function(){initNavTree('ComponentManager_8hpp_source.html','')
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    T *getComponentArrayPtr() {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">return</span> getComponentArray&lt;T&gt;().getComponentArray();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">const</span> T *getComponentArrayPtr()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">return</span> getComponentArray&lt;T&gt;()-&gt;getComponentArray();</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">const</span> std::unordered_map&lt;Entity, size_t&gt; &amp;getEntityToIndexMap() {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">const</span> std::unordered_map&lt;Entity, size_t&gt; &amp;getEntityToIndexMap()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> getComponentArray&lt;T&gt;()-&gt;getEntityToIndexMap();</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">const</span> std::unordered_map&lt;size_t, std::set&lt;Entity&gt;&gt; &amp;getIndexToEntityMap() {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">const</span> std::unordered_map&lt;size_t, std::set&lt;Entity&gt;&gt; &amp;getIndexToEntityMap()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">return</span> getComponentArray&lt;T&gt;()-&gt;getIndexToEntityMap();</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
@@ -181,21 +181,36 @@ $(document).ready(function(){initNavTree('ComponentManager_8hpp_source.html','')
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">return</span> getComponentArray&lt;T&gt;()-&gt;getTotalSize();</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    ComponentType nextComponentType = 0;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    std::unordered_map&lt;std::size_t, ComponentType&gt; componentTypes;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    std::unordered_map&lt;std::size_t, std::shared_ptr&lt;IComponentArray&gt;&gt; componentArrays;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">bool</span> hasComponent(<span class="keyword">const</span> Entity &amp;entity) {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">return</span> getComponentArray&lt;T&gt;()-&gt;hasComponent(entity);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    std::shared_ptr&lt;ComponentArray&lt;T&gt;&gt; getComponentArray() {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        std::size_t hashCode = <span class="keyword">typeid</span>(T).hash_code();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        assert(componentTypes.find(hashCode) != componentTypes.end() &amp;&amp;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;               <span class="stringliteral">&quot;Component not registered before use.&quot;</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">return</span> std::static_pointer_cast&lt;ComponentArray&lt;T&gt;&gt;(</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                componentArrays[hashCode]);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;};</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    ComponentType nextComponentType = 0;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    std::unordered_map&lt;std::size_t, ComponentType&gt; componentTypes;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    std::unordered_map&lt;std::size_t, std::shared_ptr&lt;IComponentArray&gt;&gt; componentArrays;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    std::shared_ptr&lt;ComponentArray&lt;T&gt;&gt; getComponentArray() {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        std::size_t hashCode = <span class="keyword">typeid</span>(T).hash_code();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        assert(componentTypes.find(hashCode) != componentTypes.end() &amp;&amp;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;               <span class="stringliteral">&quot;Component not registered before use.&quot;</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">return</span> std::static_pointer_cast&lt;ComponentArray&lt;T&gt;&gt;(</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                componentArrays[hashCode]);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">const</span> std::shared_ptr&lt;ComponentArray&lt;T&gt;&gt; getComponentArray()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        std::size_t hashCode = <span class="keyword">typeid</span>(T).hash_code();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        assert(componentTypes.find(hashCode) != componentTypes.end() &amp;&amp;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;               <span class="stringliteral">&quot;Component not registered before use.&quot;</span>);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordflow">return</span> std::static_pointer_cast&lt;ComponentArray&lt;T&gt;&gt;(</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                componentArrays.at(hashCode));</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;};</div>
 <div class="ttc" id="aclassComponentManager_html"><div class="ttname"><a href="classComponentManager.html">ComponentManager</a></div><div class="ttdef"><b>Definition:</b> ComponentManager.hpp:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

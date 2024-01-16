@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('ComponentArray_8hpp_source.html',''); 
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">const</span> T *getComponentArray() {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">const</span> T *getComponentArray()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">return</span> componentArray.data();</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
@@ -203,13 +203,17 @@ $(document).ready(function(){initNavTree('ComponentArray_8hpp_source.html',''); 
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">return</span> totalSize;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    std::array&lt;T, MAX_ENTITIES&gt; componentArray;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    std::unordered_map&lt;Entity, size_t&gt; entityToIndexMap;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    std::unordered_map&lt;size_t, std::set&lt;Entity&gt;&gt; indexToEntityMap;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    RemoveComponentFunction&lt;T&gt; deleteFunction;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordtype">size_t</span> totalSize = 0;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;};</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordtype">bool</span> hasComponent(<span class="keyword">const</span> Entity &amp;entity) {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keywordflow">return</span> entityToIndexMap.find(entity) != entityToIndexMap.end();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    }</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    std::array&lt;T, MAX_ENTITIES&gt; componentArray;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    std::unordered_map&lt;Entity, size_t&gt; entityToIndexMap;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    std::unordered_map&lt;size_t, std::set&lt;Entity&gt;&gt; indexToEntityMap;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    RemoveComponentFunction&lt;T&gt; deleteFunction;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">size_t</span> totalSize = 0;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;};</div>
 <div class="ttc" id="aclassComponentArray_html"><div class="ttname"><a href="classComponentArray.html">ComponentArray</a></div><div class="ttdef"><b>Definition:</b> ComponentArray.hpp:24</div></div>
 <div class="ttc" id="aclassIComponentArray_html"><div class="ttname"><a href="classIComponentArray.html">IComponentArray</a></div><div class="ttdef"><b>Definition:</b> IComponentArray.hpp:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
