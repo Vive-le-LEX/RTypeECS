@@ -98,7 +98,7 @@ public:
             }
     }
 
-    const T *getComponentArray() {
+    const T *getComponentArray() const {
         return componentArray.data();
     }
 
@@ -112,6 +112,10 @@ public:
 
     size_t getTotalSize() {
         return totalSize;
+    }
+
+    bool hasComponent(const Entity &entity) {
+        return entityToIndexMap.find(entity) != entityToIndexMap.end();
     }
 
 private:

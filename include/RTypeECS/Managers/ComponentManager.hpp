@@ -73,23 +73,28 @@ public:
     }
 
     template<typename T>
-    T *getComponentArrayPtr() {
-        return getComponentArray<T>().getComponentArray();
+    const T *getComponentArrayPtr() const {
+        return getComponentArray<T>()->getComponentArray();
     }
 
     template<typename T>
-    const std::unordered_map<Entity, size_t> &getEntityToIndexMap() {
+    const std::unordered_map<Entity, size_t> &getEntityToIndexMap() const {
         return getComponentArray<T>()->getEntityToIndexMap();
     }
 
     template<typename T>
-    const std::unordered_map<size_t, std::set<Entity>> &getIndexToEntityMap() {
+    const std::unordered_map<size_t, std::set<Entity>> &getIndexToEntityMap() const {
         return getComponentArray<T>()->getIndexToEntityMap();
     }
 
     template<typename T>
     size_t getTotalSize() {
         return getComponentArray<T>()->getTotalSize();
+    }
+
+    template<typename T>
+    bool hasComponent(const Entity &entity) {
+        return getComponentArray<T>()->hasComponent(entity);
     }
 
 private:
@@ -105,5 +110,15 @@ private:
 
         return std::static_pointer_cast<ComponentArray<T>>(
                 componentArrays[hashCode]);
+    }
+
+    template<typename T>
+    const std::shared_ptr<ComponentArray<T>> getComponentArray() const {
+        std::size_t hashCode = typeid(T).hash_code();
+        assert(componentTypes.find(hashCode) != componentTypes.end() &&
+               "Component not registered before use.");
+
+        return std::static_pointer_cast<ComponentArray<T>>(
+                componentArrays.at(hashCode));
     }
 };

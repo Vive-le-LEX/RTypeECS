@@ -72,6 +72,10 @@ public:
         return componentManager->getComponent<T>(entity);
     }
 
+    const auto &getComponentManager() {
+        return componentManager;
+    }
+
     template<typename T>
     ComponentType getComponentType() {
         return componentManager->getComponentType<T>();
@@ -100,6 +104,11 @@ public:
     template<typename T>
     void enableEntity(const Entity &entity) {
         systemManager->enableEntity<T>(entity);
+    }
+
+    template<typename T>
+    bool hasComponent(const Entity &entity) {
+        return componentManager->hasComponent<T>(entity);
     }
 private:
     std::unique_ptr<EntityManager> entityManager;
